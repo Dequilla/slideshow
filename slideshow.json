@@ -1,0 +1,8 @@
+{
+    "width":"100%",
+    "height":"90%",
+    "slides":[
+        {"background":"url(creek.jpg)"},
+        {"background":"url(mountain.jpg)"}
+    ]
+}
