@@ -18,27 +18,37 @@ function retrieveSlideshowByName(name)
 function nextSlide(name)
 {
     let slideshow = retrieveSlideshowByName(name);
-    slideshow.slides[slideshow.currentIndex].style.display = "none";
+
+    // Fade out the old slide
+    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
+    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
     slideshow.currentIndex += 1;
 
     // If slideshow reached its end
     if(slideshow.currentIndex >= slideshow.slides.length)
         slideshow.currentIndex = 0; // Set to first slide
 
-    slideshow.slides[slideshow.currentIndex].style.display = "block";
+    // Fade in the new slide
+    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
+    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
 }
 
 function prevSlide(name)
 {
     let slideshow = retrieveSlideshowByName(name);
-    slideshow.slides[slideshow.currentIndex].style.display = "none";
+
+    // Fade out the old slide
+    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
+    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
     slideshow.currentIndex -= 1;
 
     // If slideshow reached its end
     if(slideshow.currentIndex < 0)
         slideshow.currentIndex = slideshow.slides.length - 1; // Set to first slide
 
-    slideshow.slides[slideshow.currentIndex].style.display = "block";
+    // Fade in the new slide
+    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
+    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
 }
 
 function createSlide(parentDiv, slideObject, width, height, referenceObject)
@@ -48,15 +58,36 @@ function createSlide(parentDiv, slideObject, width, height, referenceObject)
     parentDiv.appendChild(slideWrapper);
     referenceObject.slides.push(slideWrapper);
 
-    slideWrapper.style.width = width;
-    slideWrapper.style.height = height;
-    slideWrapper.style.display = "none";
+    slideWrapper.style.width = "100%";
+    slideWrapper.style.height = "100%";
+    slideWrapper.style.position = "absolute";
+    slideWrapper.classList.add("slideshow-fadein");
 
-    // background
+    // Background (can be any css background rule such as hex color, rgba or img url)
     if(undefined !== slideObject["background"])
     {
         // Change the background of the slide
         slideWrapper.style.background = slideObject["background"];
+    }
+
+    // Image (an img html element)
+    if(undefined !== slideObject["img"])
+    {
+        let img = document.createElement("img");
+        img.className += " slideshow-inner-element";
+        img.src = slideObject["img"].src;
+
+        if(undefined !== slideObject["img"].width)
+        {
+            img.style.width = slideObject["img"].width;
+        }
+
+        if(undefined !== slideObject["img"].height)
+        {
+            img.style.height = slideObject["img"].height;
+        }
+
+        slideWrapper.appendChild(img);
     }
 }
 
@@ -81,6 +112,9 @@ window.onload = function()
             let height = jsonSrcObject.height;
             nrOfSlides = jsonSrcObject.slides.length;
 
+            parentDiv.style.width = width;
+            parentDiv.style.height = height;
+
             // Create a reference to this slideshow
             let slideshowObject = {
                 name: slideshowName,
@@ -101,7 +135,7 @@ window.onload = function()
         controlWrapper.className += " slideshow-control-wrapper";
 
         // Previous slide button
-        let content = '<img src="gfx/arrow-left.png" class="slideshow-prev" onclick="prevSlide(\'' + slideshowName + '\')"></img>';
+        let content = '<div class="slideshow-prev-wrapper" onclick="prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.png" class="slideshow-prev"></img></div>';
         let prev = $.parseHTML(content);
         controlWrapper.appendChild(prev[0]);
 
@@ -115,7 +149,7 @@ window.onload = function()
         }
 
         // Next slide button
-        content = '<img src="gfx/arrow-right.png" class="slideshow-next" onclick="nextSlide(\'' + slideshowName + '\')"></img>';
+        content = '<div class="slideshow-next-wrapper" onclick="nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.png" class="slideshow-next"></img></div>';
         let next = $.parseHTML(content);
         controlWrapper.appendChild(next[0]);
 
