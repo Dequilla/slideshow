@@ -3,9 +3,11 @@ A small slideshow library for webbapps.
 Still in early stages.
 
 ## Try it out!
+You can take a look at: https://dequilla.github.io/slideshow/
+
 To try it out locally without a server you will need to use firefox since chromes security in loading files locally is too strict.
 
-Otherwise upload this to a server and it should work(yet to be tested however).
+Otherwise upload this to a server and it should work.
 
 ## Usage
 Every slideshow is meant to be defined with a json document and to add it to the source page you just include it:
