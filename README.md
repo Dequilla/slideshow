@@ -5,7 +5,7 @@ Still in early stages.
 ## Try it out!
 To try it out locally without a server you will need to use firefox since chromes security in loading files locally is too strict.
 
-Otherwise upload this to a server and it should work.
+Otherwise upload this to a server and it should work(yet to be tested however).
 
 ## Usage
 Every slideshow is meant to be defined with a json document and to add it to the source page you just include it:
@@ -19,3 +19,27 @@ Then you can create one using:
 ```html
 <div class="slideshow" data-slide-name="a_unique_identifier" data-slide-src="path/to/json/file"></div>
 ```
+
+
+## JSON structure
+Here is an example slideshow.
+```json
+{
+    "width":"100%",
+    "height":"100%",
+    "auto-trans":4000,
+    "slides":[
+        {"background":"#FFF", "img":{"src":"example-content/BIG.png","width":"100%","height":"100%"}},
+        {"background":"#FFF", "img":{"src":"example-content/RESPONSIVE.png","width":"100%","height":"100%"}},
+        {"background":"#FFF", "img":{"src":"example-content/office.jpeg","width":"100%","height":"100%"}}
+    ]
+}
+```
+
+Alot of the rules you can include are just straight up CSS rules such as:
+ - width
+ - height
+ - background
+
+Some have a sort of special layout such as:
+ - auto-trans wich takes a number(no quotes) that represents how fast in milliseconds it should rotate

@@ -39,6 +39,7 @@
     z-index: 100;
 
     background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
 .slideshow-next {
@@ -58,26 +59,41 @@
     z-index: 100;
 
     background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
 .slideshow-center {
     position: relative;
     display: inline-block;
+    width: 5%;
     z-index: 100;
+    cursor: pointer;
 }
 
-.slideshow-fadeout {
-    transition: all 0.3s;
-    opacity: 0.0;
-}
-
-.slideshow-fadein {
-    transition: all 0.3s;
-    opacity: 1.0;
+.slideshow-center-wrapper {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    transform: translateY(-100%);
 }
 
 .slideshow-inner-element {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+/*
+*   Transitions
+*/
+.slideshow-fadeout {
+    transition: all 1.0s;
+    opacity: 0.0;
+}
+
+.slideshow-fadein {
+    transition: all 1.0s;
+    opacity: 1.0;
 }

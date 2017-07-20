@@ -1,6 +1,7 @@
 {
     "width":"100%",
     "height":"100%",
+    "auto-trans":4000,
     "slides":[
         {"background":"#FFF", "img":{"src":"example-content/BIG.png","width":"100%","height":"100%"}},
         {"background":"#FFF", "img":{"src":"example-content/RESPONSIVE.png","width":"100%","height":"100%"}},
