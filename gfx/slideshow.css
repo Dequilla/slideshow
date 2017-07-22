@@ -1,3 +1,8 @@
+/*
+*   Main css file for Dequilla's simple slideshows.
+*   Not to be edited, if you want to change the style use themes.
+*/
+
 .slideshow {
     margin: 0;
     padding: 0;
@@ -11,9 +16,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 100;
+
     opacity: 0.0;
     transition: all 0.3s;
-    z-index: 100;
 }
 
 .slideshow-control-wrapper:hover {
@@ -63,11 +69,12 @@
 }
 
 .slideshow-center {
+    cursor: pointer;
+    z-index: 100;
+
     position: relative;
     display: inline-block;
     width: 5%;
-    z-index: 100;
-    cursor: pointer;
 }
 
 .slideshow-center-wrapper {
@@ -79,6 +86,9 @@
     transform: translateY(-100%);
 }
 
+/*
+*   Inner element inside a slide
+*/
 .slideshow-inner-element {
     position: absolute;
     top: 0;
@@ -88,12 +98,21 @@
 /*
 *   Transitions
 */
+
+/* fade - start */
 .slideshow-fadeout {
-    transition: all 1.0s;
+    transition-property: all;
     opacity: 0.0;
 }
 
 .slideshow-fadein {
-    transition: all 1.0s;
+    transition-property: all;
     opacity: 1.0;
 }
+/* fade - end */
+
+/* Scroll - start */
+.slideshow-scroll {
+    transition: all 1.0s;
+}
+/* Scroll - end */

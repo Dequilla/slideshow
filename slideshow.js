@@ -1,19 +1,33 @@
-var slideshows = []; // An object array filled with slideshow-references so we can track all the slideshows on the page
+var deq_slideshows = []; // An object array filled with slideshow-references so we can track all the slideshows on the page
 
-function automaticTransition(name)
+function deq_addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      if (oldonload) {
+        oldonload();
+      }
+      func();
+    }
+  }
+}
+
+function deq_automaticTransition(name)
 {
-    nextSlide(name);
+    deq_nextSlide(name);
 }
 
 // Name of the slideshow you want to retrieve
-function retrieveSlideshowByName(name)
+function deq_retrieveSlideshowByName(name)
 {
     let result;
-    for(i = 0; i < slideshows.length; i++)
+    for(i = 0; i < deq_slideshows.length; i++)
     {
-        if(slideshows[i].name === name)
+        if(deq_slideshows[i].name === name)
         {
-            result = slideshows[i];
+            result = deq_slideshows[i];
         }
     }
 
@@ -21,16 +35,19 @@ function retrieveSlideshowByName(name)
 }
 
 // Name is the unique identifier of the slideshow
-function goToSlide(name, index)
+function deq_goToSlide(name, index)
 {
-    let slideshow = retrieveSlideshowByName(name);
+    let slideshow = deq_retrieveSlideshowByName(name);
 
     // Make sure its a valid index
     if(index < slideshow.slides.length && index >= 0)
     {
         // Fade out the old slide
-        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
-        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+        if(slideshow.transition === "fade")
+        {
+            slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
+            slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+        }
 
         // Update center knobs
         slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
@@ -39,52 +56,79 @@ function goToSlide(name, index)
         slideshow.currentIndex = index;
 
         // Fade in the new slide
-        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
-        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+        if(slideshow.transition === "fade")
+        {
+            slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
+            slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+        }
 
         // Update center knobs
         slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+
+        // Transition using scroll
+        if(slideshow.transition === "scroll")
+        {
+            let positionString = "-" + slideshow.currentIndex + "00%";
+            slideshow.wrapperInner.style.left = positionString;
+        }
     }
 }
 
 // Name is the unique identifier of the slideshow
-function nextSlide(name)
+function deq_nextSlide(name)
 {
-    let slideshow = retrieveSlideshowByName(name);
+    let slideshow = deq_retrieveSlideshowByName(name);
 
-    // Fade out the old slide
-    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
-    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+    // Fade transition - fade out old
+    if(slideshow.transition === "fade")
+    {
+        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
+        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+    }
 
     // Update center knobs
     slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
 
+    // Update index
     slideshow.currentIndex += 1;
 
     // If slideshow reached its end
     if(slideshow.currentIndex >= slideshow.slides.length)
         slideshow.currentIndex = 0; // Set to first slide
 
-    // Fade in the new slide
-    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
-    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+    // Fade transition - fade in new
+    if(slideshow.transition === "fade")
+    {
+        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
+        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+    }
 
     // Update center knobs
     slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+
+    if(slideshow.transition === "scroll")
+    {
+        let positionString = "-" + slideshow.currentIndex + "00%";
+        slideshow.wrapperInner.style.left = positionString;
+    }
 }
 
 // Name is the unique identifier of the slideshow
-function prevSlide(name)
+function deq_prevSlide(name)
 {
-    let slideshow = retrieveSlideshowByName(name);
+    let slideshow = deq_retrieveSlideshowByName(name);
 
-    // Fade out the old slide
-    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
-    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+    // Fade transition - fade out old
+    if(slideshow.transition === "fade")
+    {
+        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadein");
+        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadeout");
+    }
 
     // Update center knobs
     slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
 
+    // Update index
     slideshow.currentIndex -= 1;
 
     // If slideshow reached its end
@@ -92,14 +136,23 @@ function prevSlide(name)
         slideshow.currentIndex = slideshow.slides.length - 1; // Set to first slide
 
     // Fade in the new slide
-    slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
-    slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+    if(slideshow.transition === "fade")
+    {
+        slideshow.slides[slideshow.currentIndex].classList.add("slideshow-fadein");
+        slideshow.slides[slideshow.currentIndex].classList.remove("slideshow-fadeout");
+    }
 
     // Update center knobs
     slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+
+    if(slideshow.transition === "scroll")
+    {
+        let positionString = "-" + slideshow.currentIndex + "00%";
+        slideshow.wrapperInner.style.left = positionString;
+    }
 }
 
-function createSlide(parentDiv, slideObject, width, height, referenceObject)
+function deq_createSlide(parentDiv, slideObject, width, height, referenceObject, slideNr, transDur)
 {
     let slideWrapper = document.createElement("div");
     slideWrapper.className += " slide";
@@ -109,7 +162,29 @@ function createSlide(parentDiv, slideObject, width, height, referenceObject)
     slideWrapper.style.width = "100%";
     slideWrapper.style.height = "100%";
     slideWrapper.style.position = "absolute";
-    slideWrapper.classList.add("slideshow-fadeout");
+
+    if(referenceObject.transition === "fade")
+    {
+        slideWrapper.classList.add("slideshow-fadeout");
+        slideWrapper.style["transition-duration"] = transDur;
+    }
+    else if(referenceObject.transition === "scroll")
+    {
+        // Move them to a position accordingly
+        let positionString = slideNr + "00%";
+        slideWrapper.style.left = positionString;
+        referenceObject.wrapperInner.classList.add("slideshow-scroll");
+        referenceObject.wrapperInner.style.left = "0%";
+        referenceObject.wrapperInner.style["transition-duration"] = transDur;
+    }
+    else
+    {
+        // Otherwise use fade
+        slideWrapper.classList.add("slideshow-fadeout");
+        slideWrapper.style["transition-duration"] = transDur;
+
+        console.log("SLIDESHOW: Your specified transition does not match any supported. (scroll or fade)");
+    }
 
     // Background (can be any css background rule such as hex color, rgba or img url)
     if(undefined !== slideObject["background"])
@@ -139,8 +214,7 @@ function createSlide(parentDiv, slideObject, width, height, referenceObject)
     }
 }
 
-
-window.onload = function()
+function deq_init()
 {
     // Get every slideshow on this page
     var parentDivs = document.getElementsByClassName("slideshow");
@@ -153,6 +227,14 @@ window.onload = function()
         let slideshowSrcURI = parentDiv.getAttribute("data-slide-src");
         let nrOfSlides = 0;
         let slideshowName = parentDiv.getAttribute("data-slide-name");
+        let transitionType = "fade";
+        let transitionDuration = "1.0s";
+
+        let parentInnerDiv = document.createElement("div");
+        parentDiv.appendChild(parentInnerDiv);
+        parentInnerDiv.style.width = "100%";
+        parentInnerDiv.style.height = "100%";
+        parentInnerDiv.style.position = "absolute";
 
         // Get the JSON file as a JS object
         $.getJSON(slideshowSrcURI, function(jsonSrcObject) {
@@ -166,33 +248,62 @@ window.onload = function()
             // Auto transition based on timer?
             if(undefined !== jsonSrcObject["auto-trans"])
             {
-                setInterval(function(){automaticTransition(slideshowName)}, jsonSrcObject["auto-trans"]);
+                setInterval(function(){deq_automaticTransition(slideshowName)}, jsonSrcObject["auto-trans"]);
+            }
+
+            // What type of transition does it have
+            if(undefined !== jsonSrcObject["transition"])
+            {
+                transitionType = jsonSrcObject["transition"];
+            }
+            else // If none specified use fade
+            {
+                transitionType = "fade";
+            }
+
+            // Duration of transition
+            if(undefined !== jsonSrcObject["transition-duration"])
+            {
+                transitionDuration = jsonSrcObject["transition-duration"];
+            }
+            else
+            {
+                transitionDuration = "1.0s";
             }
 
             // Create a reference to this slideshow
             let slideshowObject = {
                 name: slideshowName,
                 wrapper: parentDiv,
+                wrapperInner: parentInnerDiv,
                 slides: [],
                 slideCenterKnobs: [],
+                transition: transitionType,
                 currentIndex: 0
             }
-            slideshows.push(slideshowObject);
+            deq_slideshows.push(slideshowObject);
 
             for(x = 0; x < jsonSrcObject.slides.length; x++)
             {
-                createSlide(parentDiv, jsonSrcObject.slides[x], width, height, slideshowObject);
+                deq_createSlide(parentInnerDiv, jsonSrcObject.slides[x], width, height, slideshowObject, x, transitionDuration);
             }
 
-            let slideshow = retrieveSlideshowByName(slideshowName);
-            slideshow.slides[0].classList.add("slideshow-fadein"); // Make sure the first slide is visible
+            let slideshow = deq_retrieveSlideshowByName(slideshowName);
+            if(slideshowObject.transition === "fade")
+            {
+                slideshow.slides[0].classList.add("slideshow-fadein"); // Make sure the first slide is visible
+            }
+            else if(slideshowObject.transition === "scroll")
+            {
+
+            }
 
             // Add controls
             let controlWrapper = document.createElement("div");
             controlWrapper.className += " slideshow-control-wrapper";
 
             // Previous slide button
-            let content = '<div class="slideshow-prev-wrapper" onclick="prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.png" class="slideshow-prev"></img></div>';
+            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.png" class="slideshow-prev"></img></div>';
             let prev = $.parseHTML(content);
             controlWrapper.appendChild(prev[0]);
 
@@ -201,7 +312,7 @@ window.onload = function()
             centerWrapper.classList.add("slideshow-center-wrapper");
             for(y = 0; y < nrOfSlides; y++)
             {
-                let centerbstring = '<img class="slideshow-center" src="gfx/center-dot.png" onclick="goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
+                let centerbstring = '<img class="slideshow-center" src="gfx/center-dot.png" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
                 let centerb = $.parseHTML(centerbstring);
                 centerWrapper.appendChild(centerb[0]);
                 slideshowObject.slideCenterKnobs[y] = centerb[0];
@@ -212,7 +323,7 @@ window.onload = function()
             slideshow.slideCenterKnobs[0].src = "./gfx/center-dot-active.png";
 
             // Next slide button
-            content = '<div class="slideshow-next-wrapper" onclick="nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.png" class="slideshow-next"></img></div>';
+            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.png" class="slideshow-next"></img></div>';
             let next = $.parseHTML(content);
             controlWrapper.appendChild(next[0]);
 
@@ -220,3 +331,6 @@ window.onload = function()
         }); // End json request
     } // End for loop of slideshowDivs
 }
+
+// Add deq_init() to window.onload
+deq_addLoadEvent(deq_init);

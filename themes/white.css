@@ -1,0 +1,74 @@
+/*
+*   The controller theme settings for arrows etc.
+*/
+
+/* Outer wrapper for controls - start */
+.slideshow-control-wrapper {
+    opacity: 0.0;
+    transition: all 0.5s;
+}
+
+.slideshow-control-wrapper:hover {
+    opacity: 1.0;
+    transition: all 0.5s;
+}
+/* Outer wrapper for controls - end */
+
+
+/* Button left - previous slide */
+.slideshow-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+/* Button left wrapper - previous slide wrapper */
+.slideshow-prev-wrapper {
+    height: 100%;
+    width: 10%;
+
+    position: relative;
+    display: inline-block;
+    left: 0;
+    float: left;
+
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Button right - next slide */
+.slideshow-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+/* Button right wrapper - next slide wrapper */
+.slideshow-next-wrapper {
+    height: 100%;
+    width: 10%;
+
+    position: relative;
+    display: inline-block;
+    float: right;
+
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Buttons center */
+.slideshow-center {
+    position: relative;
+    display: inline-block;
+    width: 5%;
+}
+
+/* Buttons center wrapper*/
+.slideshow-center-wrapper {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    transform: translateY(-100%);
+}
