@@ -4,6 +4,7 @@ Still in early stages.
 
 ## Try it out!
 You can take a look at it in action [here](https://dequilla.github.io/slideshow/)
+
 And learn more about how to use it [here](https://github.com/Dequilla/slideshow/blob/master/WIKI.md)
 
 To try it out locally without a server you will need to use firefox since chromes security in loading files locally is too strict.
