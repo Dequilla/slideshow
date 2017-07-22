@@ -9,8 +9,8 @@
 
 ---
 
-## __1. Usage__
-### 1.1 Inclusion
+## __Usage__
+### Inclusion
 To use the slideshows you will need to include some scripts and CSS in your html files head.
 ```html
 <script src="./jquery-3.2.1.min.js"></script>
@@ -24,7 +24,7 @@ To use the slideshows you will need to include some scripts and CSS in your html
 ```
 
 
-### 1.2 Use
+### Use
 After you have included the necessary files all you need to do is create a JSON file that represents your slideshow:
 ```json
 {
@@ -48,13 +48,13 @@ And then include it in your html like so:
 
 ---
 
-## __2. Source__
-### 2.1 Definitions
+## __Source__
+### Definitions
 Each and every JSON source file will contain a bunch of definitons of what it will contain and how it will look. Some of these represents CSS rules and can therefore be treated as such whilst some of them are normal numbers, strings etc.
 
 If you are unfamiliar with JSON you can look through [here](https://www.w3schools.com/js/js_json_intro.asp).
 
-### 2.2 Outer
+### Outer
 Here I will list all the outer attributes that has an effect on the whole slideshow:
 
  * __width__: CSS rule corresponding to the size of the slideshow
@@ -64,7 +64,7 @@ Here I will list all the outer attributes that has an effect on the whole slides
  * __transition-duration__: A CSS rule that decides how long every transition will take
  * __slides__: A JSON array containing all the slides
 
-### 2.3 Inner
+### Inner
 Here I will list all the inner attributes that has an effect upon the slides:
  * __background__: Same as CSS background, can be an img or color
  * __img__: A image, similar to background except you have more controll over the styling
