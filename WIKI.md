@@ -1,11 +1,11 @@
 # Table of contents
-* [1. Usage](#Usage)
-  * [1.1 Inclusion](#Inclusion)
-  * [1.2 Use](#Use)
-* [2. Source](#Source)
-  * [2.1 Definitions](#Definitions)
-  * [2.2 Outer](#Outer)
-  * [2.3 Inner](#Inner)
+* [1. Usage](#usage)
+  * [1.1 Inclusion](#inclusion)
+  * [1.2 Use](#use)
+* [2. Source](#source)
+  * [2.1 Definitions](#definitions)
+  * [2.2 Outer](#outer)
+  * [2.3 Inner](#inner)
 
 ---
 
