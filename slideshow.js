@@ -16,7 +16,15 @@ function deq_addLoadEvent(func) {
 
 function deq_automaticTransition(name)
 {
-    deq_nextSlide(name);
+    let slideshow = deq_retrieveSlideshowByName(name);
+
+    if(slideshow.delayTransition === false)
+    {
+        deq_nextSlide(name);
+    }
+
+    // Reset the delay if we passed it
+    slideshow.delayTransition = false;
 }
 
 // Name of the slideshow you want to retrieve
@@ -42,6 +50,9 @@ function deq_goToSlide(name, index)
     // Make sure its a valid index
     if(index < slideshow.slides.length && index >= 0)
     {
+        // Make sure the user doesn't get auto changed on instantly
+        slideshow.delayTransition = true;
+
         // Fade out the old slide
         if(slideshow.transition === "fade")
         {
@@ -50,7 +61,7 @@ function deq_goToSlide(name, index)
         }
 
         // Update center knobs
-        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
+        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
 
         // Update the index
         slideshow.currentIndex = index;
@@ -63,7 +74,7 @@ function deq_goToSlide(name, index)
         }
 
         // Update center knobs
-        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
 
         // Transition using scroll
         if(slideshow.transition === "scroll")
@@ -79,6 +90,9 @@ function deq_nextSlide(name)
 {
     let slideshow = deq_retrieveSlideshowByName(name);
 
+    // Make sure the user doesn't get auto changed on instantly
+    slideshow.delayTransition = true;
+
     // Fade transition - fade out old
     if(slideshow.transition === "fade")
     {
@@ -87,7 +101,7 @@ function deq_nextSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
 
     // Update index
     slideshow.currentIndex += 1;
@@ -104,7 +118,7 @@ function deq_nextSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
 
     if(slideshow.transition === "scroll")
     {
@@ -118,6 +132,9 @@ function deq_prevSlide(name)
 {
     let slideshow = deq_retrieveSlideshowByName(name);
 
+    // Make sure the user doesn't get auto changed on instantly
+    slideshow.delayTransition = true;
+
     // Fade transition - fade out old
     if(slideshow.transition === "fade")
     {
@@ -126,7 +143,7 @@ function deq_prevSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.png";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
 
     // Update index
     slideshow.currentIndex -= 1;
@@ -143,7 +160,7 @@ function deq_prevSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.png";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
 
     if(slideshow.transition === "scroll")
     {
@@ -279,7 +296,8 @@ function deq_init()
                 slides: [],
                 slideCenterKnobs: [],
                 transition: transitionType,
-                currentIndex: 0
+                currentIndex: 0,
+                delayTransition: false
             }
             deq_slideshows.push(slideshowObject);
 
@@ -303,7 +321,7 @@ function deq_init()
             controlWrapper.className += " slideshow-control-wrapper";
 
             // Previous slide button
-            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.png" class="slideshow-prev"></img></div>';
+            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.svg" class="slideshow-prev"></img></div>';
             let prev = $.parseHTML(content);
             controlWrapper.appendChild(prev[0]);
 
@@ -312,7 +330,7 @@ function deq_init()
             centerWrapper.classList.add("slideshow-center-wrapper");
             for(y = 0; y < nrOfSlides; y++)
             {
-                let centerbstring = '<img class="slideshow-center" src="gfx/center-dot.png" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
+                let centerbstring = '<img class="slideshow-center" src="gfx/center-dot.svg" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
                 let centerb = $.parseHTML(centerbstring);
                 centerWrapper.appendChild(centerb[0]);
                 slideshowObject.slideCenterKnobs[y] = centerb[0];
@@ -320,10 +338,10 @@ function deq_init()
             controlWrapper.appendChild(centerWrapper);
 
             // Make sure the first of the center knobs are active
-            slideshow.slideCenterKnobs[0].src = "./gfx/center-dot-active.png";
+            slideshow.slideCenterKnobs[0].src = "gfx/center-dot-active.svg";
 
             // Next slide button
-            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.png" class="slideshow-next"></img></div>';
+            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.svg" class="slideshow-next"></img></div>';
             let next = $.parseHTML(content);
             controlWrapper.appendChild(next[0]);
 
