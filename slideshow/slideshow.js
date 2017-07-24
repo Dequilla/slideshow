@@ -1,6 +1,28 @@
 var deq_slideshows = []; // An object array filled with slideshow-references so we can track all the slideshows on the page
+var controlImagePaths = {
+    imageLeft: "",
+    imageRight: "",
+    imageCenter: "",
+    imageCenterActive: ""
+}
 
-function deq_addLoadEvent(func) {
+function deq_getMetaTagByName(name)
+{
+    var tags = document.getElementsByTagName("META");
+    let result = "";
+    for(i = 0; i < tags.length; i++)
+    {
+        if(tags[i].name === name)
+        {
+            result = tags[i];
+        }
+    }
+
+    return result;
+}
+
+function deq_addLoadEvent(func)
+{
   var oldonload = window.onload;
   if (typeof window.onload != 'function') {
     window.onload = func;
@@ -61,7 +83,7 @@ function deq_goToSlide(name, index)
         }
 
         // Update center knobs
-        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
+        slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenter;
 
         // Update the index
         slideshow.currentIndex = index;
@@ -74,7 +96,7 @@ function deq_goToSlide(name, index)
         }
 
         // Update center knobs
-        slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
+        slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenterActive;
 
         // Transition using scroll
         if(slideshow.transition === "scroll")
@@ -101,7 +123,7 @@ function deq_nextSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenter;
 
     // Update index
     slideshow.currentIndex += 1;
@@ -118,7 +140,7 @@ function deq_nextSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenterActive;
 
     if(slideshow.transition === "scroll")
     {
@@ -143,7 +165,7 @@ function deq_prevSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot.svg";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenter;
 
     // Update index
     slideshow.currentIndex -= 1;
@@ -160,7 +182,7 @@ function deq_prevSlide(name)
     }
 
     // Update center knobs
-    slideshow.slideCenterKnobs[slideshow.currentIndex].src = "gfx/center-dot-active.svg";
+    slideshow.slideCenterKnobs[slideshow.currentIndex].src = controlImagePaths.imageCenterActive;
 
     if(slideshow.transition === "scroll")
     {
@@ -236,6 +258,26 @@ function deq_init()
     // Get every slideshow on this page
     var parentDivs = document.getElementsByClassName("slideshow");
 
+    // Load our general css
+    $('head').append('<!-- General css rules for slideshows -->\n<link rel="stylesheet" type="text/css" href="slideshow/slideshow.css">');
+
+    // Load the theme
+    let theme = deq_getMetaTagByName("slideshow").getAttribute("theme");
+    if(theme === "") theme = "original";
+    let themeURI = "slideshow/themes/" + theme + "/theme.json";
+    console.log(themeURI);
+    $.getJSON(themeURI, function(themeSrcObject) {
+        let cssURI = "slideshow/themes/" + theme + "/" + themeSrcObject["css-src"];
+
+        // Load in css theme file
+        $('head').append('<!-- Theme css rules for slideshows -->\n<link rel="stylesheet" type="text/css" href="' + cssURI + '">')
+
+        controlImagePaths.imageLeft = "slideshow/themes/" + theme + "/" + themeSrcObject["arrow-left"];
+        controlImagePaths.imageRight = "slideshow/themes/" + theme + "/" + themeSrcObject["arrow-right"];
+        controlImagePaths.imageCenter = "slideshow/themes/" + theme + "/" + themeSrcObject["center-dot"];
+        controlImagePaths.imageCenterActive = "slideshow/themes/" + theme + "/" + themeSrcObject["center-dot-active"];
+    });
+
     // Go through each and every slideshow div and setup it's content
     for(i = 0; i < parentDivs.length; i++)
     {
@@ -258,7 +300,6 @@ function deq_init()
             let width = jsonSrcObject.width;
             let height = jsonSrcObject.height;
             nrOfSlides = jsonSrcObject["slides"].length;
-
             parentDiv.style.width = width;
             parentDiv.style.height = height;
 
@@ -321,7 +362,7 @@ function deq_init()
             controlWrapper.className += " slideshow-control-wrapper";
 
             // Previous slide button
-            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-left.svg" class="slideshow-prev"></img></div>';
+            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageLeft + '" class="slideshow-prev"></img></div>';
             let prev = $.parseHTML(content);
             controlWrapper.appendChild(prev[0]);
 
@@ -330,7 +371,7 @@ function deq_init()
             centerWrapper.classList.add("slideshow-center-wrapper");
             for(y = 0; y < nrOfSlides; y++)
             {
-                let centerbstring = '<img class="slideshow-center" src="gfx/center-dot.svg" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
+                let centerbstring = '<img class="slideshow-center" src="' + controlImagePaths.imageCenter + '" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
                 let centerb = $.parseHTML(centerbstring);
                 centerWrapper.appendChild(centerb[0]);
                 slideshowObject.slideCenterKnobs[y] = centerb[0];
@@ -338,10 +379,10 @@ function deq_init()
             controlWrapper.appendChild(centerWrapper);
 
             // Make sure the first of the center knobs are active
-            slideshow.slideCenterKnobs[0].src = "gfx/center-dot-active.svg";
+            slideshow.slideCenterKnobs[0].src = controlImagePaths.imageCenterActive;
 
             // Next slide button
-            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="gfx/arrow-right.svg" class="slideshow-next"></img></div>';
+            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageRight + '" class="slideshow-next"></img></div>';
             let next = $.parseHTML(content);
             controlWrapper.appendChild(next[0]);
 
