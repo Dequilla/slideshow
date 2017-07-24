@@ -272,7 +272,7 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
             }
 
             link.classList.add("slideshow-link");
-            link.classList.add("slideshow-inner-element");
+            //link.classList.add("slideshow-inner-element");
 
             slideWrapper.appendChild(link);
         }

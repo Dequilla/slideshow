@@ -17,14 +17,18 @@
     top: 0;
     left: 0;
     z-index: 101;
+
+    pointer-events: none;
 }
 
 .slideshow-prev-wrapper, .slideshow-next-wrapper {
     cursor: pointer;
+    pointer-events: auto;
 }
 
 .slideshow-center {
     cursor: pointer;
+    pointer-events: auto;
 }
 
 /* Inner element inside a slide */
@@ -47,6 +51,7 @@
 .slideshow-fadein {
     transition-property: all;
     opacity: 1.0;
+    z-index: 10;
 }
 /* fade - end */
 

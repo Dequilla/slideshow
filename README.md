@@ -15,7 +15,8 @@ Every slideshow is meant to be defined with a json document and to add it to the
 ```html
 <script src="./slideshow.js"></script>
 <script src="./jquery-3.2.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="slideshow.css">
+<link rel="stylesheet" type="text/css" href="slideshow.css" />
+<meta name="slideshow" theme="original" />
 ```
 Then you can create one using:
 
