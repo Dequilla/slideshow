@@ -1,6 +1,5 @@
 # Slideshow
 A small slideshow library for webbapps.
-Still in early stages.
 
 ## Try it out!
 You can take a look at it in action [here](https://dequilla.github.io/slideshow/)

@@ -17,45 +17,14 @@
   top: 0;
   left: 0;
   z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  opacity: 0.0;
-  transition: all 0.3s;
-}
-
-.slideshow-control-wrapper:hover {
-  opacity: 1.0;
 }
 
 .slideshow-prev-wrapper, .slideshow-next-wrapper {
-  height: 100%;
-  width: 100px;
-  display: flex;
   cursor: pointer;
-}
-
-.slideshow-prev-wrapper {
-  background: linear-gradient(to right, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
-}
-
-.slideshow-next-wrapper {
-  background: linear-gradient(to left, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
-}
-
-.slideshow-prev, .slideshow-next {
-  align-self: center;
-}
-
-.slideshow-center-wrapper {
-  width: 100%;
-  text-align: center;
-  align-self: flex-end;
 }
 
 .slideshow-center {
   cursor: pointer;
-  display: inline-block;
-  width: 30px;
 }
 
 /* Inner element inside a slide */
