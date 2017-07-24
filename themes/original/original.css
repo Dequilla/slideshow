@@ -33,6 +33,7 @@
 
 .slideshow-prev, .slideshow-next {
   align-self: center;
+  width: inherit; /* Breaks in chrome without this */
 }
 
 .slideshow-center-wrapper {
