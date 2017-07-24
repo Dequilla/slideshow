@@ -1,6 +1,7 @@
 # TODO
 # High priority
 - [ ] Fix bug where img src of controls(left and right arrow and center dots are (unknown) on first look of the page
+- [ ] Add a way to have links (mainly to have a link covering the whole slide)
 
 # Low priority
  - [ ] add support for more elements inside the slideshow
