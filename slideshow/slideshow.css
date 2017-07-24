@@ -4,52 +4,54 @@
 */
 
 .slideshow {
-  margin: 0;
-  padding: 0;
-  position: relative;
-  overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .slideshow-control-wrapper {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 101;
 }
 
 .slideshow-prev-wrapper, .slideshow-next-wrapper {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .slideshow-center {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* Inner element inside a slide */
 .slideshow-inner-element {
-  position: absolute;
-  top: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
+.slideshow-link {
+}
 /* Transitions */
 
 /* fade - start */
 .slideshow-fadeout {
-  transition-property: all;
-  opacity: 0.0;
+    transition-property: all;
+    opacity: 0.0;
 }
 
 .slideshow-fadein {
-  transition-property: all;
-  opacity: 1.0;
+    transition-property: all;
+    opacity: 1.0;
 }
 /* fade - end */
 
 /* Scroll - start */
 .slideshow-scroll {
-  transition: all 1.0s;
+    transition-property: all;
 }
 /* Scroll - end */

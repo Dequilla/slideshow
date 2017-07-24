@@ -232,6 +232,52 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
         slideWrapper.style.background = slideObject["background"];
     }
 
+    // Links - always first element
+    let links = slideObject["links"];
+    if(undefined !== links)
+    {
+        for(l = 0; l < links.length; l++)
+        {
+            let link = document.createElement("a");
+            link.href = links[l].url;
+
+            if(undefined !== links[l].width)
+                link.style.width = links[l].width;
+            else
+                link.style.width = "100%";
+
+            if(undefined !== links[l].height)
+                link.style.height = links[l].height;
+            else
+                link.style.height = "100%";
+
+            if(undefined !== links[l].in)
+            {
+                if(links[l].in === "new")
+                {
+                    link.setAttribute("target", "_blank");
+                }
+                else if(links[l].in === "same")
+                {
+                    link.setAttribute("target", "_self");
+                }
+                else
+                {
+                    link.setAttribute("target", "_self");
+                }
+            }
+            else
+            {
+                link.setAttribute("target", "_blank");
+            }
+
+            link.classList.add("slideshow-link");
+            link.classList.add("slideshow-inner-element");
+
+            slideWrapper.appendChild(link);
+        }
+    }
+
     // Image (an img html element)
     if(undefined !== slideObject["img"])
     {
@@ -251,6 +297,7 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
 
         slideWrapper.appendChild(img);
     }
+
 }
 
 function deq_init()
@@ -265,7 +312,6 @@ function deq_init()
     let theme = deq_getMetaTagByName("slideshow").getAttribute("theme");
     if(theme === "") theme = "original";
     let themeURI = "slideshow/themes/" + theme + "/theme.json";
-    console.log(themeURI);
     $.getJSON(themeURI, function(themeSrcObject) {
         let cssURI = "slideshow/themes/" + theme + "/" + themeSrcObject["css-src"];
 
@@ -276,119 +322,119 @@ function deq_init()
         controlImagePaths.imageRight = "slideshow/themes/" + theme + "/" + themeSrcObject["arrow-right"];
         controlImagePaths.imageCenter = "slideshow/themes/" + theme + "/" + themeSrcObject["center-dot"];
         controlImagePaths.imageCenterActive = "slideshow/themes/" + theme + "/" + themeSrcObject["center-dot-active"];
-    });
 
-    // Go through each and every slideshow div and setup it's content
-    for(i = 0; i < parentDivs.length; i++)
-    {
-        // Retrieve URI of json source file
-        let parentDiv = parentDivs[i];
-        let slideshowSrcURI = parentDiv.getAttribute("data-slide-src");
-        let nrOfSlides = 0;
-        let slideshowName = parentDiv.getAttribute("data-slide-name");
-        let transitionType = "fade";
-        let transitionDuration = "1.0s";
+        // Go through each and every slideshow div and setup it's content
+        for(i = 0; i < parentDivs.length; i++)
+        {
+            // Retrieve URI of json source file
+            let parentDiv = parentDivs[i];
+            let slideshowSrcURI = parentDiv.getAttribute("data-slide-src");
+            let nrOfSlides = 0;
+            let slideshowName = parentDiv.getAttribute("data-slide-name");
+            let transitionType = "fade";
+            let transitionDuration = "1.0s";
 
-        let parentInnerDiv = document.createElement("div");
-        parentDiv.appendChild(parentInnerDiv);
-        parentInnerDiv.style.width = "100%";
-        parentInnerDiv.style.height = "100%";
-        parentInnerDiv.style.position = "absolute";
+            let parentInnerDiv = document.createElement("div");
+            parentDiv.appendChild(parentInnerDiv);
+            parentInnerDiv.style.width = "100%";
+            parentInnerDiv.style.height = "100%";
+            parentInnerDiv.style.position = "absolute";
 
-        // Get the JSON file as a JS object
-        $.getJSON(slideshowSrcURI, function(jsonSrcObject) {
-            let width = jsonSrcObject.width;
-            let height = jsonSrcObject.height;
-            nrOfSlides = jsonSrcObject["slides"].length;
-            parentDiv.style.width = width;
-            parentDiv.style.height = height;
+            // Get the JSON file as a JS object
+            $.getJSON(slideshowSrcURI, function(jsonSrcObject) {
+                let width = jsonSrcObject.width;
+                let height = jsonSrcObject.height;
+                nrOfSlides = jsonSrcObject["slides"].length;
+                parentDiv.style.width = width;
+                parentDiv.style.height = height;
 
-            // Auto transition based on timer?
-            if(undefined !== jsonSrcObject["auto-trans"])
-            {
-                setInterval(function(){deq_automaticTransition(slideshowName)}, jsonSrcObject["auto-trans"]);
-            }
+                // Auto transition based on timer?
+                if(undefined !== jsonSrcObject["auto-trans"])
+                {
+                    setInterval(function(){deq_automaticTransition(slideshowName)}, jsonSrcObject["auto-trans"]);
+                }
 
-            // What type of transition does it have
-            if(undefined !== jsonSrcObject["transition"])
-            {
-                transitionType = jsonSrcObject["transition"];
-            }
-            else // If none specified use fade
-            {
-                transitionType = "fade";
-            }
+                // What type of transition does it have
+                if(undefined !== jsonSrcObject["transition"])
+                {
+                    transitionType = jsonSrcObject["transition"];
+                }
+                else // If none specified use fade
+                {
+                    transitionType = "fade";
+                }
 
-            // Duration of transition
-            if(undefined !== jsonSrcObject["transition-duration"])
-            {
-                transitionDuration = jsonSrcObject["transition-duration"];
-            }
-            else
-            {
-                transitionDuration = "1.0s";
-            }
+                // Duration of transition
+                if(undefined !== jsonSrcObject["transition-duration"])
+                {
+                    transitionDuration = jsonSrcObject["transition-duration"];
+                }
+                else
+                {
+                    transitionDuration = "1.0s";
+                }
 
-            // Create a reference to this slideshow
-            let slideshowObject = {
-                name: slideshowName,
-                wrapper: parentDiv,
-                wrapperInner: parentInnerDiv,
-                slides: [],
-                slideCenterKnobs: [],
-                transition: transitionType,
-                currentIndex: 0,
-                delayTransition: false
-            }
-            deq_slideshows.push(slideshowObject);
+                // Create a reference to this slideshow
+                let slideshowObject = {
+                    name: slideshowName,
+                    wrapper: parentDiv,
+                    wrapperInner: parentInnerDiv,
+                    slides: [],
+                    slideCenterKnobs: [],
+                    transition: transitionType,
+                    currentIndex: 0,
+                    delayTransition: false
+                }
+                deq_slideshows.push(slideshowObject);
 
-            for(x = 0; x < jsonSrcObject.slides.length; x++)
-            {
-                deq_createSlide(parentInnerDiv, jsonSrcObject.slides[x], width, height, slideshowObject, x, transitionDuration);
-            }
+                for(x = 0; x < jsonSrcObject.slides.length; x++)
+                {
+                    deq_createSlide(parentInnerDiv, jsonSrcObject.slides[x], width, height, slideshowObject, x, transitionDuration);
+                }
 
-            let slideshow = deq_retrieveSlideshowByName(slideshowName);
-            if(slideshowObject.transition === "fade")
-            {
-                slideshow.slides[0].classList.add("slideshow-fadein"); // Make sure the first slide is visible
-            }
-            else if(slideshowObject.transition === "scroll")
-            {
+                let slideshow = deq_retrieveSlideshowByName(slideshowName);
+                if(slideshowObject.transition === "fade")
+                {
+                    slideshow.slides[0].classList.add("slideshow-fadein"); // Make sure the first slide is visible
+                }
+                else if(slideshowObject.transition === "scroll")
+                {
 
-            }
+                }
 
-            // Add controls
-            let controlWrapper = document.createElement("div");
-            controlWrapper.className += " slideshow-control-wrapper";
+                // Add controls
+                let controlWrapper = document.createElement("div");
+                controlWrapper.className += " slideshow-control-wrapper";
 
-            // Previous slide button
-            let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageLeft + '" class="slideshow-prev"></img></div>';
-            let prev = $.parseHTML(content);
-            controlWrapper.appendChild(prev[0]);
+                // Previous slide button
+                let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageLeft + '" class="slideshow-prev"></img></div>';
+                let prev = $.parseHTML(content);
+                controlWrapper.appendChild(prev[0]);
 
-            // Center buttons
-            let centerWrapper = document.createElement("div");
-            centerWrapper.classList.add("slideshow-center-wrapper");
-            for(y = 0; y < nrOfSlides; y++)
-            {
-                let centerbstring = '<img class="slideshow-center" src="' + controlImagePaths.imageCenter + '" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
-                let centerb = $.parseHTML(centerbstring);
-                centerWrapper.appendChild(centerb[0]);
-                slideshowObject.slideCenterKnobs[y] = centerb[0];
-            }
-            controlWrapper.appendChild(centerWrapper);
+                // Center buttons
+                let centerWrapper = document.createElement("div");
+                centerWrapper.classList.add("slideshow-center-wrapper");
+                for(y = 0; y < nrOfSlides; y++)
+                {
+                    let centerbstring = '<img class="slideshow-center" src="' + controlImagePaths.imageCenter + '" onclick="deq_goToSlide(\'' + slideshowName + '\',' + y + ')"></img>';
+                    let centerb = $.parseHTML(centerbstring);
+                    centerWrapper.appendChild(centerb[0]);
+                    slideshowObject.slideCenterKnobs[y] = centerb[0];
+                }
+                controlWrapper.appendChild(centerWrapper);
 
-            // Make sure the first of the center knobs are active
-            slideshow.slideCenterKnobs[0].src = controlImagePaths.imageCenterActive;
+                // Make sure the first of the center knobs are active
+                slideshow.slideCenterKnobs[0].src = controlImagePaths.imageCenterActive;
 
-            // Next slide button
-            content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageRight + '" class="slideshow-next"></img></div>';
-            let next = $.parseHTML(content);
-            controlWrapper.appendChild(next[0]);
+                // Next slide button
+                content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageRight + '" class="slideshow-next"></img></div>';
+                let next = $.parseHTML(content);
+                controlWrapper.appendChild(next[0]);
 
-            parentDiv.appendChild(controlWrapper);
-        }); // End json request
-    } // End for loop of slideshowDivs
+                parentDiv.appendChild(controlWrapper);
+            }); // End json request
+        } // End for loop of slideshowDivs
+    }); // End load json for theme
 }
 
 // Add deq_init() to window.onload
