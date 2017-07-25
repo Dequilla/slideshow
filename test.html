@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+
+    <style media="screen">
+
+      * { box-sizing: border-box; }
+
+      body { margin: 0; }
+
+      .container {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+
+      .slide-wrapper {
+        width: 100%;
+        position: relative;
+      }
+
+      .slide-img-wrapper {
+        position: relative;
+      }
+
+      .slide-img-wrapper img {
+        display: block;
+        width: 100%;
+      }
+
+      .slide-caption {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+      }
+
+      .slide-prev, .slide-next {
+        width: 10%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .slide-prev {
+        left: 0;
+      }
+
+      .slide-next {
+        right: 0;
+      }
+
+      .slide-wrapper:hover .slide-prev, .slide-wrapper:hover .slide-next {
+        opacity: 1;
+      }
+
+      .slide-prev img, .slide-next img {
+        align-self: center;
+        max-height: 50px;
+      }
+
+      .slide-prev {
+        background: linear-gradient(to right, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+      }
+
+      .slide-next {
+        background: linear-gradient(to left, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+      }
+
+      .indicator-wrapper {
+        position: absolute;
+        bottom: 0;
+        left: 10%;
+        right: 10%;
+        text-align: center;
+        padding: 10px 0;
+        pointer-events: none;
+      }
+
+      .indicator-wrapper img {
+        max-height: 20px;
+        cursor: pointer;
+        pointer-events: auto;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="slide-wrapper">
+
+        <!-- Img and text -->
+        <div class="slide-img-wrapper">
+
+          <div class="slide">
+            <img src="https://source.unsplash.com/random/1280x720">
+            <a href="https://image.freepik.com/free-icon/thumbs-up-hand-outline_318-41813.jpg" class="slide-caption"></a>
+          </div>
+
+        </div>
+
+
+        <!-- Controlls -->
+        <div class="slide-prev">
+          <img src="./slideshow/themes/original/arrow-left.svg" />
+        </div>
+        <div class="slide-next">
+          <img src="./slideshow/themes/original/arrow-right.svg" />
+        </div>
+
+        <!-- Circles -->
+        <div class="indicator-wrapper">
+          <img src="./slideshow/themes/original/center-dot.svg" />
+        </div>
+
+      </div>
+
+    </div>
+
+  </body>
+</html>

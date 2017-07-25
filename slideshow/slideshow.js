@@ -338,15 +338,31 @@ function deq_init()
             parentDiv.appendChild(parentInnerDiv);
             parentInnerDiv.style.width = "100%";
             parentInnerDiv.style.height = "100%";
-            parentInnerDiv.style.position = "absolute";
+            parentInnerDiv.style.position = "relative";
 
             // Get the JSON file as a JS object
             $.getJSON(slideshowSrcURI, function(jsonSrcObject) {
                 let width = jsonSrcObject.width;
                 let height = jsonSrcObject.height;
                 nrOfSlides = jsonSrcObject["slides"].length;
-                parentDiv.style.width = width;
-                parentDiv.style.height = height;
+
+                if(undefined !== width)
+                {
+                    parentDiv.style.width = width;
+                }
+                else
+                {
+                    parentDiv.style.width = "inherit";
+                }
+
+                if(undefined !== height)
+                {
+                    parentDiv.style.height = height;
+                }
+                else
+                {
+                    parentDiv.style.width = "inherit";
+                }
 
                 // Auto transition based on timer?
                 if(undefined !== jsonSrcObject["auto-trans"])
@@ -409,7 +425,7 @@ function deq_init()
                 // Previous slide button
                 let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageLeft + '" class="slideshow-prev"></img></div>';
                 let prev = $.parseHTML(content);
-                controlWrapper.appendChild(prev[0]);
+                parentDiv.appendChild(prev[0]);
 
                 // Center buttons
                 let centerWrapper = document.createElement("div");
@@ -421,7 +437,7 @@ function deq_init()
                     centerWrapper.appendChild(centerb[0]);
                     slideshowObject.slideCenterKnobs[y] = centerb[0];
                 }
-                controlWrapper.appendChild(centerWrapper);
+                parentDiv.appendChild(centerWrapper);
 
                 // Make sure the first of the center knobs are active
                 slideshow.slideCenterKnobs[0].src = controlImagePaths.imageCenterActive;
@@ -429,9 +445,9 @@ function deq_init()
                 // Next slide button
                 content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageRight + '" class="slideshow-next"></img></div>';
                 let next = $.parseHTML(content);
-                controlWrapper.appendChild(next[0]);
+                parentDiv.appendChild(next[0]);
 
-                parentDiv.appendChild(controlWrapper);
+                //parentDiv.appendChild(controlWrapper);
             }); // End json request
         } // End for loop of slideshowDivs
     }); // End load json for theme

@@ -2,48 +2,51 @@
 *   The controller theme settings for arrows etc.
 */
 
-/* Outer wrapper for controls - start */
-.slideshow-control-wrapper {
+/* Next, previous and center buttons - start */
+.slideshow-prev-wrapper, .slideshow-next-wrapper {
+    height: 100%;
+    width: 100px;
     display: flex;
-    justify-content: space-between;
-    opacity: 0.0;
+    cursor: pointer;
+    opacity: 0;
+    justify-content: center;
+    position: absolute;
+    top: 0;
     transition: all 0.3s;
 }
 
-.slideshow-control-wrapper:hover {
-    opacity: 1.0;
-}
-/* Outer wrapper for controls - end
-
-/* Next, previous and center buttons - start */
-.slideshow-prev-wrapper, .slideshow-next-wrapper {
-  height: 100%;
-  width: 100px;
-  display: flex;
-  cursor: pointer;
-}
-
 .slideshow-prev-wrapper {
-  background: linear-gradient(to right, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+    background: linear-gradient(to right, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+    left: 0;
 }
 
 .slideshow-next-wrapper {
-  background: linear-gradient(to left, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+    background: linear-gradient(to left, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
+    right: 0;
 }
 
 .slideshow-prev, .slideshow-next {
-  align-self: center;
-  width: inherit; /* Breaks in chrome without this */
+    align-self: center;
+    width: inherit; /* Breaks in chrome without this */
 }
 
 .slideshow-center-wrapper {
-  width: 100%;
-  text-align: center;
-  align-self: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    padding: 10px 0;
 }
 
 .slideshow-center {
-  display: inline-block;
-  width: 30px;
+    display: inline-block;
+    width: 30px;
+    cursor: pointer;
+}
+
+.slideshow:hover .slideshow-prev-wrapper,
+.slideshow:hover .slideshow-next-wrapper,
+.slideshow:hover .slideshow-center-wrapper {
+    opacity: 1;
 }
 /* Next, previous and center buttons - end */
