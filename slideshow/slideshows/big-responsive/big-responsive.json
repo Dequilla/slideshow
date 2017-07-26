@@ -1,20 +1,57 @@
 {
-    "width":"100%",
-    "height":"100%",
-    "auto-trans":4000,
-    "transition":"scroll",
-    "transition-duration":"1.0s",
-    "slides":[
-        {
-            "background":"#FFF",
-            "img":{
-                "src":"slideshow/slideshows/big-responsive/bridge.png","width":"100%","height":"100%"
-            },
-            "links":[
-                {"url":"https://github.com/Dequilla/slideshow", "width":"100%", "height":"100%", "in":"new"}
-            ]
-        },
-        {"background":"#FFF", "img":{"src":"slideshow/slideshows/big-responsive/calm-sea.png","width":"100%","height":"100%"}},
-        {"background":"#FFF", "img":{"src":"slideshow/slideshows/big-responsive/office.png","width":"100%","height":"100%"}}
+  "width":"100%",
+  "height":"100%",
+  "auto-trans":4000,
+  "transition":"scroll",
+  "transition-duration":"1.0s",
+  "slides":[{
+    "background":"#FFF",
+    "img":{
+      "src":"slideshow/slideshows/big-responsive/bridge.png",
+      "width":"100%",
+      "height":"100%"
+    },
+    "links":[
+      {
+        "url":"https://github.com/Dequilla/slideshow",
+        "width":"100%",
+        "height":"100%",
+        "in":"new"
+      }
     ]
+  },
+
+  {
+    "background":"#FFF",
+    "img":{
+      "src":"slideshow/slideshows/big-responsive/calm-sea.png",
+      "width":"100%",
+      "height":"100%"
+    },
+    "links":[
+      {
+        "url":"https://github.com/Dequilla/slideshow",
+        "width":"100%",
+        "height":"100%",
+        "in":"new"
+      }
+    ]
+  },
+
+  {
+    "background":"#FFF",
+    "img":{
+      "src":"slideshow/slideshows/big-responsive/office.png",
+      "width":"100%",
+      "height":"100%"
+    },
+    "links":[
+      {
+        "url":"https://github.com/Dequilla/slideshow",
+        "width":"100%",
+        "height":"100%",
+        "in":"new"
+      }
+    ]
+  }]
 }
