@@ -102,7 +102,7 @@ function deq_goToSlide(name, index)
         if(slideshow.transition === "scroll")
         {
             let positionString = "-" + slideshow.currentIndex + "00%";
-            slideshow.wrapperInner.style.left = positionString;
+            slideshow.wrapperInner.style.transform = "translateX(" + positionString + ")";
         }
     }
 }
@@ -145,7 +145,7 @@ function deq_nextSlide(name)
     if(slideshow.transition === "scroll")
     {
         let positionString = "-" + slideshow.currentIndex + "00%";
-        slideshow.wrapperInner.style.left = positionString;
+        slideshow.wrapperInner.style.transform = "translateX(" + positionString + ")";
     }
 }
 
@@ -187,7 +187,7 @@ function deq_prevSlide(name)
     if(slideshow.transition === "scroll")
     {
         let positionString = "-" + slideshow.currentIndex + "00%";
-        slideshow.wrapperInner.style.left = positionString;
+        slideshow.wrapperInner.style.transform = "translateX(" + positionString + ")";
     }
 }
 
@@ -198,10 +198,6 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
     parentDiv.appendChild(slideWrapper);
     referenceObject.slides.push(slideWrapper);
 
-    slideWrapper.style.width = "100%";
-    slideWrapper.style.height = "100%";
-    slideWrapper.style.position = "absolute";
-
     if(referenceObject.transition === "fade")
     {
         slideWrapper.classList.add("slideshow-fadeout");
@@ -210,10 +206,7 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
     else if(referenceObject.transition === "scroll")
     {
         // Move them to a position accordingly
-        let positionString = slideNr + "00%";
-        slideWrapper.style.left = positionString;
         referenceObject.wrapperInner.classList.add("slideshow-scroll");
-        referenceObject.wrapperInner.style.left = "0%";
         referenceObject.wrapperInner.style["transition-duration"] = transDur;
     }
     else
@@ -251,6 +244,16 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
             else
                 link.style.height = "100%";
 
+            if(undefined !== links[l].top)
+                link.style.top = links[l].top;
+            else
+                link.style.top = "0";
+
+            if(undefined !== links[l].left)
+                link.style.left = links[l].left;
+            else
+                link.style.left = "0";
+
             if(undefined !== links[l].in)
             {
                 if(links[l].in === "new")
@@ -284,16 +287,6 @@ function deq_createSlide(parentDiv, slideObject, width, height, referenceObject,
         let img = document.createElement("img");
         img.className += " slideshow-inner-element";
         img.src = slideObject["img"].src;
-
-        if(undefined !== slideObject["img"].width)
-        {
-            img.style.width = slideObject["img"].width;
-        }
-
-        if(undefined !== slideObject["img"].height)
-        {
-            img.style.height = slideObject["img"].height;
-        }
 
         slideWrapper.appendChild(img);
     }
@@ -336,17 +329,12 @@ function deq_init()
 
             let parentInnerDiv = document.createElement("div");
             parentDiv.appendChild(parentInnerDiv);
-            parentInnerDiv.style.width = "100%";
-            parentInnerDiv.style.height = "100%";
-            parentInnerDiv.style.position = "absolute";
 
             // Get the JSON file as a JS object
             $.getJSON(slideshowSrcURI, function(jsonSrcObject) {
                 let width = jsonSrcObject.width;
                 let height = jsonSrcObject.height;
                 nrOfSlides = jsonSrcObject["slides"].length;
-                parentDiv.style.width = width;
-                parentDiv.style.height = height;
 
                 // Auto transition based on timer?
                 if(undefined !== jsonSrcObject["auto-trans"])
@@ -403,13 +391,13 @@ function deq_init()
                 }
 
                 // Add controls
-                let controlWrapper = document.createElement("div");
-                controlWrapper.className += " slideshow-control-wrapper";
+                // let controlWrapper = document.createElement("div");
+                // controlWrapper.className += " slideshow-control-wrapper";
 
                 // Previous slide button
                 let content = '<div class="slideshow-prev-wrapper" onclick="deq_prevSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageLeft + '" class="slideshow-prev"></img></div>';
                 let prev = $.parseHTML(content);
-                controlWrapper.appendChild(prev[0]);
+                parentDiv.appendChild(prev[0]);
 
                 // Center buttons
                 let centerWrapper = document.createElement("div");
@@ -421,7 +409,7 @@ function deq_init()
                     centerWrapper.appendChild(centerb[0]);
                     slideshowObject.slideCenterKnobs[y] = centerb[0];
                 }
-                controlWrapper.appendChild(centerWrapper);
+                parentDiv.appendChild(centerWrapper);
 
                 // Make sure the first of the center knobs are active
                 slideshow.slideCenterKnobs[0].src = controlImagePaths.imageCenterActive;
@@ -429,9 +417,9 @@ function deq_init()
                 // Next slide button
                 content = '<div class="slideshow-next-wrapper" onclick="deq_nextSlide(\'' + slideshowName + '\')"><img src="' + controlImagePaths.imageRight + '" class="slideshow-next"></img></div>';
                 let next = $.parseHTML(content);
-                controlWrapper.appendChild(next[0]);
+                parentDiv.appendChild(next[0]);
 
-                parentDiv.appendChild(controlWrapper);
+                // parentDiv.appendChild(controlWrapper);
             }); // End json request
         } // End for loop of slideshowDivs
     }); // End load json for theme

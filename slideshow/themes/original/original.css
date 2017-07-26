@@ -2,44 +2,51 @@
 *   The controller theme settings for arrows etc.
 */
 
-/* Outer wrapper for controls - start */
-.slideshow-control-wrapper {
-    display: flex;
-    justify-content: space-between;
-    opacity: 0.0;
-    transition: all 0.3s;
-}
-
-.slideshow-control-wrapper:hover {
-    opacity: 1.0;
-}
-/* Outer wrapper for controls - end
-
 /* Next, previous and center buttons - start */
 .slideshow-prev-wrapper, .slideshow-next-wrapper {
   height: 100%;
-  width: 100px;
+  width: 10%;
   display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
   cursor: pointer;
 }
 
 .slideshow-prev-wrapper {
+  left: 0;
   background: linear-gradient(to right, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
 }
 
 .slideshow-next-wrapper {
+  right: 0;
   background: linear-gradient(to left, rgba(7,7,7,0.75) 0%,rgba(72,72,72,0) 94%,rgba(76,76,76,0) 100%);
 }
 
 .slideshow-prev, .slideshow-next {
   align-self: center;
-  width: inherit; /* Breaks in chrome without this */
+  width: 40px;
 }
 
 .slideshow-center-wrapper {
   width: 100%;
   text-align: center;
   align-self: flex-end;
+  position: absolute;
+  bottom: 0;
+}
+
+.slideshow-prev-wrapper,
+.slideshow-center-wrapper,
+.slideshow-next-wrapper {
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.slideshow:hover .slideshow-prev-wrapper,
+.slideshow:hover .slideshow-center-wrapper,
+.slideshow:hover .slideshow-next-wrapper {
+  opacity: 1;
 }
 
 .slideshow-center {
